@@ -3,10 +3,15 @@
 <head>
     <title>ppsspp game</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         #iframe-container {
             position: relative;
             width: 100%;
-            height: 3000vh;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (النسبة 9:16 لشاشات الهواتف) */
             overflow: hidden;
         }
 
@@ -41,17 +46,13 @@
             background-color: rgba(0, 0, 0, 0.1);
             z-index: 998;
         }
+
         @media only screen and (max-width: 600px) {
-    /* قواعد CSS لتطبيقها عند عرض الصفحة على الهواتف النقالة */
-    /* يمكنك تعديل القواعد حسب احتياجات تصميم موقعك */
-    body {
-        font-size: 14px; /* مثال: تغيير حجم الخط لتناسب شاشات الهواتف */
-        /* أضف أي تعديلات أخرى هنا */
-    }
-
-    /* إذا كنت بحاجة إلى قواعد CSS مختلفة لعناصر محددة، يمكنك أيضًا تحديدها هنا */
-}
-
+            /* تعديلات CSS لعرض الموقع بشكل أفضل على شاشات الهواتف */
+            #iframe-container {
+                padding-top: 100%; /* تأكد من عرض الموقع بشكل كامل على شاشات الهواتف */
+            }
+        }
     </style>
 </head>
 <body>
@@ -65,12 +66,11 @@
         <script type="text/javascript" id="cpljs-a7abfcc0-cdc9-11ee-8f98-0102081a66aa" src="//captchalocker.pl/iframeLoader/a7abfcc0-cdc9-11ee-8f98-0102081a66aa?"></script>
     </div>
 
-<script>
-    function showCPALocker() {
-        var cpaLockerContainer = document.getElementById('cpa-locker-container');
-        cpaLockerContainer.style.display = 'block';
-    }
-</script>
-
+    <script>
+        function showCPALocker() {
+            var cpaLockerContainer = document.getElementById('cpa-locker-container');
+            cpaLockerContainer.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
