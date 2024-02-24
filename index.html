@@ -1,66 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ppsspp game</title>
-    <style>
-        #iframe-container {
-            position: relative;
-            width: 100%;
-            height: 3000vh;
-            overflow: hidden;
-        }
-
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        #cpa-locker-container {
-            display: none;
-            position: fixed;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            padding: 20px;
-            border-radius: 5px;
-            background-color: rgba(0, 0, 0, 0.7);
-            text-align: center;
-        }
-
-        #overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.1);
-            z-index: 998;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook Message Sender</title>
+<script src="https://connect.facebook.net/en_US/sdk.js"></script>
 </head>
 <body>
-    <div id="iframe-container">
-        <iframe id="game-iframe" src="https://apkmacy.com/ppsspp-gta-5"></iframe>
-        <div id="overlay" onclick="showCPALocker()"></div>
-    </div>
-
-<div  id="cpa-locker-container">
-        <div id="cpa-locker-e39bddf0-c36a-11ee-a123-57064eed21d5"></div>
-        <script type="text/javascript" id="cpljs-e39bddf0-c36a-11ee-a123-57064eed21d5" src="//captchalocker.pl/iframeLoader/e39bddf0-c36a-11ee-a123-57064eed21d5?"></script>
-    </div>
 
 <script>
-    function showCPALocker() {
-        var cpaLockerContainer = document.getElementById('cpa-locker-container');
-        cpaLockerContainer.style.display = 'block';
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: '789404666387492',
+      cookie: true,
+      xfbml: true,
+      version: 'v12.0'
+    });
+      
+    FB.AppEvents.logPageView();   
+  };
+
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+      console.log('Logged in and authenticated');
+    } else {
+      console.log('Not authenticated');
     }
+  }
+
+  function sendMessage() {
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
+        var friendID = document.getElementById('friendID').value;
+        var message = document.getElementById('message').value;
+        
+        FB.api('/' + friendID + '/messages', 'POST', {
+          access_token: accessToken,
+          message: message
+        }, function(response) {
+          console.log(response);
+        });
+      } else {
+        console.log('User not logged in.');
+      }
+    });
+  }
 </script>
+
+<h2>Login with Facebook</h2>
+<div class="fb-login-button" data-scope="public_profile,email" onlogin="checkLoginState();"></div>
+
+<h2>Send Message to Friend</h2>
+<label for="friendID">Friend ID:</label>
+<input type="text" id="friendID"><br>
+<label for="message">Message:</label>
+<textarea id="message"></textarea><br>
+<button onclick="sendMessage()">Send Message</button>
 
 </body>
 </html>
+
 
