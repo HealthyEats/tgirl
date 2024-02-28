@@ -1,37 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Send Message</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ava smith</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .video-container {
+            height: 100vh; /* ارتفاع يتكيف مع ارتفاع الشاشة */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            flex-direction: column;
+            padding: 20px;
+            position: relative; /* إضافة هذا لتحديد موقع العناوين بالنسبة للفيديو */
+        }
+        .video {
+            width: 100%;
+            height: 300px; /* تحديد الارتفاع بناءً على العرض */
+            max-width: 100%; /* حفظ نسبة العرض الأصلية للفيديو */
+            object-fit: cover; /* جعل محتوى الفيديو يملأ الإطار بشكل كامل */
+        }
+        .video-title {
+            color: white;
+            font-size: 24px;
+            margin-top: 10px;
+            position: absolute; /* تحديد موقع العناوين بالنسبة للفيديو */
+            top: 15px; /* تحديد المسافة من الأعلى */
+            left: 0; /* تحديد المسافة من اليسار */
+            right: 0; /* تحديد المسافة من اليمين */
+            text-align: center; /* محاذاة النص في الوسط */
+        }
+        .scroll-indicator {
+            position: fixed;
+            width:80%;
+            height:20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Send Message to Friend</h2>
-<form id="messageForm">
-  <label for="message">Message:</label><br>
-  <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
-  <button type="submit">Send</button>
-</form>
+<div class="video-container">
+    <h2 class="video-title"> Naughty Stepsisters Give It Up To Family Friend</h2>
+    <video id="myVideo" preload="auto" poster="https://www9.0zz0.com/2024/02/28/06/610442702.jpg" class="video" src="https://cdn77-vid-mp4.xnxx-cdn.com/-sob-sKJnrYOrWiOaiQ0JQ==,1709117459/videos/mp4/2/0/d/xvideos.com_20d39362d09e8f6a6722696959172dee.mp4?ui=NDEuMTAwLjE0OC42NS0vdmlkZW8tMTl3eGkzOTQvbmF1Z2h0eV9zdGVwc2k=" controls playsinline webkit-playsinline></video>
+</div>
 
-<iframe id="messengerFrame" src="https://www.facebook.com/messages/t/100071993388009" width="100%" height="500px" frameborder="0"></iframe>
+<div class="scroll-indicator">
+    <span class="close-btn" onclick="closeIndicator()">x</span>
+    Swipe down to see more videos
+    You will see only one ad
+</div>
 
 <script>
-const form = document.getElementById('messageForm');
-const iframe = document.getElementById('messengerFrame');
+    function closeIndicator() {
+        var indicator = document.querySelector('.scroll-indicator');
+        indicator.style.display = 'none';
+    }
+</script>
 
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const message = document.getElementById('message').value;
-  sendMessage(message);
-});
+<script>
+    var videos = document.querySelectorAll('video');
+    var clickCount = 0; // تخزين عدد النقرات بشكل عام
+    var isFirstClick = true; // متغير لتحديد ما إذا كانت هذه هي النقرة الأولى
 
-function sendMessage(message) {
-  // Assuming you have a function called `sendToMessenger` in the parent window
-  // that sends the message to Messenger page inside the iframe
-  // You need to replace `{friend_id}` with the actual friend's ID
-  iframe.contentWindow.sendToMessenger(message);
-}
+    videos.forEach(function(video) {
+        video.addEventListener("play", function() {
+            clickCount++;
+            if (isFirstClick && clickCount === 1) { // تحقق مما إذا كانت هذه هي النقرة الأولى
+                openPopunder(); // إذا كانت النقرة الأولى، فافتح البوب اندر
+                isFirstClick = false; // قم بتحديث القيمة للإشارة إلى أن هذه لم تعد النقرة الأولى بعد الآن
+            } else if (clickCount === 4) { // تحقق إذا كانت هذه هي النقرة الرابعة
+                openPopunder(); // إذا كانت النقرة الرابعة، فافتح البوب اندر
+                clickCount = 0; // إعادة تعيين عدد النقرات بعد فتح البوب اندر
+            }
+        });
+    });
+
+    function openPopunder() {
+        var adUrl = "https://slipheirphysician.com/kahqms4rd?key=1a036088216230c0e44f71e819bd1e79";
+        var popunderWindow = window.open(adUrl, 'popunderWindow', 'width=800,height=600');
+        if (popunderWindow) {
+            popunderWindow.blur();
+            window.focus();
+        }
+    }
+</script>
+
+<script>
+    var video = document.getElementById("myVideo");
+    video.addEventListener("loadedmetadata", function() {
+        var aspectRatio = video.videoWidth / video.videoHeight;
+        video.style.height = video.offsetWidth / aspectRatio + "px";
+    });
 </script>
 
 </body>
