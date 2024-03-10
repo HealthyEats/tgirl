@@ -3,10 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ميزان خفيف</title>
+<title>تحميل ملفات</title>
 </head>
 <body>
-<iframe src="https://www.ailandingpagegenerator.com" width="100%" height="300px" style="border:none;" sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
+<label for="folderName">اسم المجلد:</label>
+<input type="text" id="folderName" placeholder="اسم المجلد">
+<br>
+<label for="fileUpload">تحميل الملفات:</label>
+<input type="file" id="fileUpload" multiple>
+<button onclick="generateLink()">توليد الرابط</button>
+<div id="link"></div>
+
+<script>
+    function generateLink() {
+        const folderName = document.getElementById('folderName').value;
+        const baseUrl = 'http://s2.serv00.com/'; // استخدم Home directory
+        const fullUrl = baseUrl + folderName;
+        document.getElementById('link').innerHTML = '<a href="' + fullUrl + '">' + fullUrl + '</a>';
+    }
+</script>
 </body>
 </html>
+
 
