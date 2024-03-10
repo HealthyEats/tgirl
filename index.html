@@ -3,25 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحميل ملفات</title>
+<title>تحميل مجلد</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<label for="folderName">اسم المجلد الفرعي:</label>
-<input type="text" id="folderName" placeholder="اسم المجلد الفرعي">
-<br>
-<label for="fileUpload">تحميل الملفات:</label>
-<input type="file" id="fileUpload" multiple>
-<button onclick="generateLink()">توليد الرابط</button>
-<div id="link"></div>
+<label for="folderUpload">رفع مجلد:</label>
+<input type="file" id="folderUpload" webkitdirectory directory multiple>
+<div id="links"></div>
 
 <script>
-    function generateLink() {
-        const subFolderName = document.getElementById('folderName').value;
-        const baseUrl = 'http://karens49.serv00.net/'; // النطاق الرئيسي
-        const fullUrl = baseUrl + subFolderName;
-        document.getElementById('link').innerHTML = '<a href="' + fullUrl + '">' + fullUrl + '</a>';
-    }
+    $('#folderUpload').on('change', function(e){
+        var files = e.target.files;
+        var baseUrl = 'http://karens49.serv00.net/'; // تحديد النطاق الرئيسي للموقع
+
+        for (var i = 0; i < files.length; i++) {
+            var folderName = files[i].webkitRelativePath.split('/')[0];
+            var folderUrl = baseUrl + folderName;
+            $('#links').append('<p><a href="' + folderUrl + '">' + folderUrl + '</a></p>');
+        }
+    });
 </script>
 </body>
 </html>
+
 
