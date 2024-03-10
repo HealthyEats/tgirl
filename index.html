@@ -7,21 +7,28 @@
 </head>
 <body>
 
-<!-- عنصر img لعرض الصورة -->
-<img id="uploadedImage" width="100%" height="auto">
+<iframe id="uploaderIframe" src="https://www.0zz0.com/" width="100%" height="600px"></iframe>
 
-<!-- سكربت لجلب الرابط الذي تم إنشاؤه على موقع رفع الصور -->
 <script>
-// انتظر حتى يتم تحميل الصفحة بالكامل
 window.onload = function() {
-    // جلب الرابط من iframe
-    var iframeContent = document.querySelector('iframe').contentWindow.document.body.innerHTML;
+    // الحصول على محتوى iframe
+    var iframeContent = document.getElementById('uploaderIframe').contentWindow.document.body.innerHTML;
     // تحديد الرابط الذي يبدأ بـ "https://www.0zz0.com/image"، واستخراجه
     var imageUrl = iframeContent.match(/https:\/\/www\.0zz0\.com\/image\/.*?(?=")/);
-    // تعيين الرابط كقيمة لخاصية src لعنصر img
-    document.getElementById('uploadedImage').src = imageUrl[0];
+    // إذا تم العثور على الرابط، استخدمه بطريقة معينة
+    if (imageUrl !== null) {
+        // يمكنك عرض الرابط أو استخدامه بأي شكل تشاء هنا، على سبيل المثال:
+        console.log("رابط الصورة:", imageUrl[0]);
+        // أو يمكنك تحميل الصورة مباشرة عبر JavaScript
+        var imageElement = new Image();
+        imageElement.src = imageUrl[0];
+        document.body.appendChild(imageElement);
+    } else {
+        console.log("لم يتم العثور على رابط الصورة داخل iframe.");
+    }
 };
 </script>
 
 </body>
 </html>
+
