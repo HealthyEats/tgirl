@@ -4,36 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ميزان خفيف</title>
+<!-- تحميل مكتبة Weight.js -->
+
 </head>
 <body>
 
-<!-- عنصر iframe لرفع الصور -->
-<iframe id="uploadFrame" src="https://www.0zz0.com/" width="100%" height="600px"></iframe>
 
-<!-- عرض الرابط خارج iframe -->
-<a id="uploadedLink" href="#" target="_blank">الرابط المرفوع</a>
-
-<script>
-// استدعاء الدالة عند تحميل الصفحة
-window.onload = function() {
-    // الوصول إلى الإطار iframe
-    var iframe = document.getElementById('uploadFrame');
-    
-    // استدعاء الدالة عند تحميل محتوى الإطار
-    iframe.onload = function() {
-        // الوصول إلى الرابط داخل الإطار
-        var uploadedLink = iframe.contentWindow.document.querySelector('.up_img_center input[type="text"]');
-        
-        // التحقق من وجود الرابط
-        if (uploadedLink) {
-            // عرض الرابط المرفوع خارج الإطار
-            var link = document.getElementById('uploadedLink');
-            link.href = uploadedLink.value;
-            link.innerText = uploadedLink.value;
-        }
-    };
-};
-</script>
+<iframe src="https://app.site123.com/manager/login/sign_up.php?l=ar" width="100%" height="600px"></iframe>
 
 </body>
 </html>
+
