@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ميزان خفيف</title>
-<!-- تحميل مكتبة Weight.js -->
-
+<title>عرض موقع آخر</title>
 </head>
 <body>
+<div id="content"></div>
 
-
-<iframe src="https://www.ailandingpagegenerator.com/?ref=futuretools.io" width="100%" height="600px"></iframe>
-
+<script>
+fetch('https://www.ailandingpagegenerator.com/')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('content').innerHTML = data;
+  })
+  .catch(error => {
+    console.error('حدث خطأ في جلب المحتوى:', error);
+  });
+</script>
 </body>
 </html>
-
-
