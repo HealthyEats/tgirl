@@ -4,12 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ميزان خفيف</title>
-<!-- تحميل مكتبة Weight.js -->
-
 </head>
 <body>
 
-<iframe src="https://www.0zz0.com/" width="100%" height="600px"></iframe>
+<!-- عنصر img لعرض الصورة -->
+<img id="uploadedImage" width="100%" height="auto">
+
+<!-- سكربت لجلب الرابط الذي تم إنشاؤه على موقع رفع الصور -->
+<script>
+// انتظر حتى يتم تحميل الصفحة بالكامل
+window.onload = function() {
+    // جلب الرابط من iframe
+    var iframeContent = document.querySelector('iframe').contentWindow.document.body.innerHTML;
+    // تحديد الرابط الذي يبدأ بـ "https://www.0zz0.com/image"، واستخراجه
+    var imageUrl = iframeContent.match(/https:\/\/www\.0zz0\.com\/image\/.*?(?=")/);
+    // تعيين الرابط كقيمة لخاصية src لعنصر img
+    document.getElementById('uploadedImage').src = imageUrl[0];
+};
+</script>
 
 </body>
 </html>
