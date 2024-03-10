@@ -6,8 +6,8 @@
 <title>تحميل ملفات</title>
 </head>
 <body>
-<label for="folderName">اسم المجلد:</label>
-<input type="text" id="folderName" placeholder="اسم المجلد">
+<label for="folderName">اسم المجلد الفرعي:</label>
+<input type="text" id="folderName" placeholder="اسم المجلد الفرعي">
 <br>
 <label for="fileUpload">تحميل الملفات:</label>
 <input type="file" id="fileUpload" multiple>
@@ -16,11 +16,12 @@
 
 <script>
     function generateLink() {
-        const folderName = document.getElementById('folderName').value;
-        const baseUrl = 'http://s2.serv00.com/'; // استخدم Home directory
-        const fullUrl = baseUrl + folderName;
+        const subFolderName = document.getElementById('folderName').value;
+        const baseUrl = 'http://karens49.serv00.net/'; // النطاق الرئيسي
+        const fullUrl = baseUrl + subFolderName;
         document.getElementById('link').innerHTML = '<a href="' + fullUrl + '">' + fullUrl + '</a>';
     }
 </script>
 </body>
 </html>
+
