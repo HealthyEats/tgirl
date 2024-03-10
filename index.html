@@ -9,26 +9,25 @@
 
 <iframe id="uploaderIframe" src="https://www.0zz0.com/" width="100%" height="600px"></iframe>
 
+<!-- عرض الرابط المستخرج من iframe -->
+<p id="imageLink"></p>
+
 <script>
 window.onload = function() {
     // الحصول على محتوى iframe
     var iframeContent = document.getElementById('uploaderIframe').contentWindow.document.body.innerHTML;
     // تحديد الرابط الذي يبدأ بـ "https://www.0zz0.com/image"، واستخراجه
     var imageUrl = iframeContent.match(/https:\/\/www\.0zz0\.com\/image\/.*?(?=")/);
-    // إذا تم العثور على الرابط، استخدمه بطريقة معينة
+    // عرض الرابط في مكان محدد في صفحة موقعك
     if (imageUrl !== null) {
-        // يمكنك عرض الرابط أو استخدامه بأي شكل تشاء هنا، على سبيل المثال:
-        console.log("رابط الصورة:", imageUrl[0]);
-        // أو يمكنك تحميل الصورة مباشرة عبر JavaScript
-        var imageElement = new Image();
-        imageElement.src = imageUrl[0];
-        document.body.appendChild(imageElement);
+        document.getElementById('imageLink').innerText = "رابط الصورة: " + imageUrl[0];
     } else {
-        console.log("لم يتم العثور على رابط الصورة داخل iframe.");
+        document.getElementById('imageLink').innerText = "لم يتم العثور على رابط الصورة داخل iframe.";
     }
 };
 </script>
 
 </body>
 </html>
+
 
