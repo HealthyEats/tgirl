@@ -3,27 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحميل مجلد</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>رفع الملفات</title>
 </head>
 <body>
-<label for="folderUpload">رفع مجلد:</label>
-<input type="file" id="folderUpload" webkitdirectory directory multiple>
-<div id="links"></div>
+<h2>رفع الملفات</h2>
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="files[]" multiple>
+    <input type="submit" value="رفع الملفات">
+</form>
 
-<script>
-    $('#folderUpload').on('change', function(e){
-        var files = e.target.files;
-        var baseUrl = 'http://karens49.serv00.net/'; // تحديد النطاق الرئيسي للموقع
+<?php
+// تحديد المسار الذي يتم تخزين الملفات فيه
+$uploadDir = '/usr/home/karens49/domains/karens49.serv00.net/public_html/';
 
-        for (var i = 0; i < files.length; i++) {
-            var folderName = files[i].webkitRelativePath.split('/')[0];
-            var folderUrl = baseUrl + folderName;
-            $('#links').append('<p><a href="' + folderUrl + '">' + folderUrl + '</a></p>');
-        }
-    });
-</script>
+// معالجة عملية الرفع
+if (!empty($_FILES['files']['name'][0])) {
+    // تحرك الملفات إلى المسار المحدد
+    foreach ($_FILES['files']['name'] as $key => $name) {
+        move_uploaded_file($_FILES['files']['tmp_name'][$key], $uploadDir . $name);
+    }
+    // عرض روابط الملفات المرفوعة للمستخدم
+    echo "<h2>تم رفع الملفات بنجاح:</h2>";
+    foreach ($_FILES['files']['name'] as $name) {
+        echo '<p><a href="' . $uploadDir . $name . '">' . $uploadDir . $name . '</a></p>';
+    }
+}
+?>
 </body>
 </html>
+
 
 
