@@ -3,25 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رفع الملفات والحصول على الروابط</title>
+    <title>FTP File Upload</title>
 </head>
 <body>
-    <h1>رفع الملفات والحصول على الروابط</h1>
+    <h1>FTP File Upload</h1>
     <form action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="fileToUpload" id="fileToUpload">
-        <input type="submit" value="رفع الملف" name="submit">
+        <label for="file">Select file:</label>
+        <input type="file" name="file" id="file"><br><br>
+        <input type="submit" value="Upload File" name="submit">
     </form>
-
-    <?php
-    if(isset($_GET['url'])){
-        echo '<p>رابط موقعك: <a href="'.$_GET['url'].'">'.$_GET['url'].'</a></p>';
-    }
-    ?>
-
-    <p>المستندات متاحة على: <a href="https://docs.serv00.com/">https://docs.serv00.com/</a> - تحقق منها أولاً.</p>
-    <p>إذا كانت لديك أي أسئلة، يرجى طرحها على <a href="https://forum.serv00.com/">https://forum.serv00.com/</a>.</p>
 </body>
 </html>
+
 
 
 
