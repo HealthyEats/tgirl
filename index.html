@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رفع الملفات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رفع الملفات والحصول على الروابط</title>
 </head>
 <body>
-<h2>رفع الملفات</h2>
-<form action="" method="post" enctype="multipart/form-data">
-    <input type="file" name="files[]" multiple>
-    <input type="submit" value="رفع الملفات">
-</form>
+    <h1>رفع الملفات والحصول على الروابط</h1>
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="رفع الملف" name="submit">
+    </form>
 
-<?php
-// تحديد المسار الذي يتم تخزين الملفات فيه
-$uploadDir = '/usr/home/karens49/domains/karens49.serv00.net/public_html/';
+    <?php
+    if(isset($_GET['url'])){
+        echo '<p>رابط موقعك: <a href="'.$_GET['url'].'">'.$_GET['url'].'</a></p>';
+    }
+    ?>
 
-// معالجة عملية الرفع
-if (!empty($_FILES['files']['name'][0])) {
-    // تحرك الملفات إلى المسار المحدد
-    foreach ($_FILES['files']['name'] as $key => $name) {
-        move_uploaded_file($_FILES['files']['tmp_name'][$key], $uploadDir . $name);
-    }
-    // عرض روابط الملفات المرفوعة للمستخدم
-    echo "<h2>تم رفع الملفات بنجاح:</h2>";
-    foreach ($_FILES['files']['name'] as $name) {
-        echo '<p><a href="' . $uploadDir . $name . '">' . $uploadDir . $name . '</a></p>';
-    }
-}
-?>
+    <p>المستندات متاحة على: <a href="https://docs.serv00.com/">https://docs.serv00.com/</a> - تحقق منها أولاً.</p>
+    <p>إذا كانت لديك أي أسئلة، يرجى طرحها على <a href="https://forum.serv00.com/">https://forum.serv00.com/</a>.</p>
 </body>
 </html>
+
 
 
 
