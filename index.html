@@ -68,16 +68,14 @@
             color: black; /* تغيير لون النص إلى الأبيض */
         }
 
-        #recipe {
+        #recipe-container {
             margin-top: 20px;
             text-align: center;
         }
 
-        #recipe img {
-            width: 200px; /* تحديد عرض الصورة */
-            height: auto; /* احتفاظ بالنسب */
-            border-radius: 8px; /* تدوير الزوايا */
-            margin-bottom: 10px;
+        #recipe-container img {
+            max-width: 200px;
+            max-height: 200px;
         }
     </style>
 </head>
@@ -93,12 +91,12 @@
                 <input type="text" id="ingredients-input" placeholder="أدخل المكونات هنا...">
                 <label for="time-range" id="time-label">كم لديك من الوقت؟</label>
                 <input type="range" min="5" max="180" value="5" id="time-range">
-                <button class="button" id="recipe-button" style="margin-top:20px;">اعطني الوصفة</button>
+                
+                <button class="button" id="recipe-button" style="  margin-top:20px;">اعطني الوصفة</button>
             </div>
         </div>
-        <div id="recipe"></div>
+        <div id="recipe-container"></div>
     </div>
-
     <script>
         document.getElementById("food-button").innerHTML = "المأكولات";
         document.getElementById("dessert-button").innerHTML = "الحلويات";
@@ -116,7 +114,6 @@
         document.getElementById("recipe-button").addEventListener("click", function() {
             var ingredients = document.getElementById("ingredients-input").value;
             var time = document.getElementById("time-range").value;
-
             fetchRecipe(ingredients, time);
         });
 
@@ -140,24 +137,25 @@
         }
 
         function displayRecipe(recipes) {
-            var recipeDiv = document.getElementById("recipe");
-            recipeDiv.innerHTML = "";
+            var recipeContainer = document.getElementById("recipe-container");
+            recipeContainer.innerHTML = "";
 
             recipes.forEach(recipe => {
+                var recipeName = recipe.recipe.label;
+                var recipeImage = recipe.recipe.image;
+                var recipeSource = recipe.recipe.source;
+                var recipeLink = recipe.recipe.url;
+
                 var recipeElement = document.createElement("div");
-
-                var recipeName = document.createElement("h2");
-                recipeName.textContent = recipe.recipe.label;
-
-                var recipeImage = document.createElement("img");
-                recipeImage.src = recipe.recipe.image;
-
-                recipeElement.appendChild(recipeName);
-                recipeElement.appendChild(recipeImage);
-
-                recipeDiv.appendChild(recipeElement);
+                recipeElement.innerHTML = `
+                    <h2>${recipeName}</h2>
+                    <img src="${recipeImage}" alt="${recipeName}">
+                    <p>المصدر: <a href="${recipeLink}" target="_blank">${recipeSource}</a></p>
+                `;
+                recipeContainer.appendChild(recipeElement);
             });
         }
     </script>
 </body>
 </html>
+
