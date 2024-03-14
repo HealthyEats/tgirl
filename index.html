@@ -18,7 +18,7 @@
         }
         
         .button {
-            background-color: #65a65c;
+            background-color: #c9e6c6;
             border: none;
             color: white;
             padding: 15px 32px;
@@ -29,11 +29,10 @@
             margin: 4px 2px;
             cursor: pointer;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
         }
 
-        .button:hover {
-            background-color: #4caf50;
+        .button.active {
+            background-color: #65a65c;
         }
         
         input[type="text"] {
@@ -69,42 +68,24 @@
             color: black; /* تغيير لون النص إلى الأبيض */
         }
 
-        #recipe-list {
-            text-align: center;
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .recipe-item {
-            width: 300px;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .recipe-item:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .recipe-img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .recipe-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
         .recipe-details {
-            font-size: 16px;
-            color: #555;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .recipe-details p {
+            font-weight: bold;
+            color: #65a65c;
+        }
+
+        .recipe-details ol {
+            list-style-type: decimal;
+            padding-inline-start: 20px;
+        }
+
+        .recipe-image {
+            margin-top: 20px;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -125,36 +106,44 @@
         </div>
         <div id="recipe-list"></div>
     </div>
-
     <script>
-        const appId = '9fa74179';
-        const appKey = 'd1d5b7e7a12b05cbda6767a1fb30a3b9';
-
         document.getElementById("food-button").innerHTML = "المأكولات";
         document.getElementById("dessert-button").innerHTML = "الحلويات";
 
-        document.getElementById("recipe-button").addEventListener("click", function() {
-            const ingredients = document.getElementById("ingredients-input").value;
-            const time = document.getElementById("time-range").value;
+        document.getElementById("food-button").addEventListener("click", function() {
+            this.classList.add("active");
+            document.getElementById("dessert-button").classList.remove("active");
+        });
+        
+        document.getElementById("dessert-button").addEventListener("click", function() {
+            this.classList.add("active");
+            document.getElementById("food-button").classList.remove("active");
+        });
 
-            fetch(`https://api.edamam.com/search?q=${ingredients}&app_id=${appId}&app_key=${appKey}&time=${time}`)
+        document.getElementById("recipe-button").addEventListener("click", function() {
+            var ingredients = document.getElementById("ingredients-input").value;
+            var time = document.getElementById("time-range").value;
+            var recipeList = document.getElementById("recipe-list");
+            recipeList.innerHTML = "";
+
+            fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${ingredients}&app_id=9fa74179&app_key=d1d5b7e7a12b05cbda6767a1fb30a3b9&time=${time}`)
                 .then(response => response.json())
                 .then(data => {
-                    const recipeList = document.getElementById("recipe-list");
-                    recipeList.innerHTML = ''; // Clear previous recipes
-                    
                     data.hits.forEach(hit => {
                         const recipe = hit.recipe;
                         const recipeItem = document.createElement("div");
-                        recipeItem.classList.add("recipe-item");
                         recipeItem.innerHTML = `
-                            <img class="recipe-img" src="${recipe.image}" alt="${recipe.label}">
-                            <h3 class="recipe-title">${recipe.label}</h3>
+                            <h2>${recipe.label}</h2>
+                            <img class="recipe-image" src="${recipe.image}" alt="${recipe.label}">
                             <p class="recipe-details">وقت التحضير: ${recipe.totalTime} دقيقة</p>
                             <p class="recipe-details">المكونات:</p>
                             <ul class="recipe-details">
                                 ${recipe.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}
                             </ul>
+                            <p class="recipe-details">طريقة التحضير:</p>
+                            <ol class="recipe-details">
+                                ${recipe.instructions ? recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('') : 'تعليمات غير متوفرة'}
+                            </ol>
                         `;
                         recipeList.appendChild(recipeItem);
                     });
@@ -168,6 +157,7 @@
     </script>
 </body>
 </html>
+
 
 
 
