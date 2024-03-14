@@ -126,11 +126,14 @@
                             <ul>
                                 ${recipe.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}
                             </ul>
+                            <p>طريقة التحضير:</p>
+                            <ol>
+                                ${recipe.ingredientLines.map(instruction => `<li>${instruction}</li>`).join('')}
+                            </ol>
                         `;
                         recipeList.appendChild(recipeItem);
                     });
-                })
-                .catch(error => console.error('Error fetching recipes:', error));
+                });
         });
 
         document.getElementById("time-range").addEventListener("input", function() {
@@ -140,5 +143,6 @@
     </script>
 </body>
 </html>
+
 
 
