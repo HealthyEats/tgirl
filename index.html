@@ -71,21 +71,15 @@
         .recipe-details {
             text-align: right;
             margin-top: 20px;
-        }
-
-        .recipe-details p {
-            font-weight: bold;
-            color: #65a65c;
-        }
-
-        .recipe-details ol {
-            list-style-type: decimal;
-            padding-inline-start: 20px;
+            font-size: 18px;
         }
 
         .recipe-image {
-            margin-top: 20px;
-            border-radius: 8px;
+            width: 300px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -101,11 +95,14 @@
                 <input type="text" id="ingredients-input" placeholder="أدخل المكونات هنا...">
                 <label for="time-range" id="time-label">كم لديك من الوقت؟</label>
                 <input type="range" min="5" max="180" value="5" id="time-range">
+                
                 <button class="button" id="recipe-button" style="margin-top:20px;">اعطني الوصفة</button>
             </div>
         </div>
-        <div id="recipe-list"></div>
+
+        <div id="recipe-list" class="recipe-details"></div>
     </div>
+
     <script>
         document.getElementById("food-button").innerHTML = "المأكولات";
         document.getElementById("dessert-button").innerHTML = "الحلويات";
@@ -121,14 +118,19 @@
         });
 
         document.getElementById("recipe-button").addEventListener("click", function() {
-            var ingredients = document.getElementById("ingredients-input").value;
-            var time = document.getElementById("time-range").value;
-            var recipeList = document.getElementById("recipe-list");
-            recipeList.innerHTML = "";
+            const ingredients = document.getElementById("ingredients-input").value;
+            const time = document.getElementById("time-range").value;
 
-            fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${ingredients}&app_id=9fa74179&app_key=d1d5b7e7a12b05cbda6767a1fb30a3b9&time=${time}`)
+            const appId = "9fa74179";
+            const appKey = "d1d5b7e7a12b05cbda6767a1fb30a3b9";
+            const url = `https://api.edamam.com/search?q=${ingredients}&app_id=${appId}&app_key=${appKey}&time=${time}`;
+            
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
+                    const recipeList = document.getElementById("recipe-list");
+                    recipeList.innerHTML = "";
+
                     data.hits.forEach(hit => {
                         const recipe = hit.recipe;
                         const recipeItem = document.createElement("div");
@@ -157,6 +159,7 @@
     </script>
 </body>
 </html>
+
 
 
 
