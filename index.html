@@ -118,9 +118,8 @@
         });
 
         document.getElementById("recipe-button").addEventListener("click", function() {
-            const ingredients = document.getElementById("ingredients-input").value;
             const time = document.getElementById("time-range").value;
-
+            const ingredients = document.getElementById("ingredients-input").value;
             const appId = "9fa74179";
             const appKey = "d1d5b7e7a12b05cbda6767a1fb30a3b9";
             const url = `https://api.edamam.com/search?q=${ingredients}&app_id=${appId}&app_key=${appKey}&time=${time}`;
@@ -144,7 +143,7 @@
                             </ul>
                             <p class="recipe-details">طريقة التحضير:</p>
                             <ol class="recipe-details">
-                                ${recipe.instructions ? recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('') : 'تعليمات غير متوفرة'}
+                                ${recipe.instructions ? recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('') : '<li>تعليمات غير متوفرة</li>'}
                             </ol>
                         `;
                         recipeList.appendChild(recipeItem);
@@ -159,6 +158,7 @@
     </script>
 </body>
 </html>
+
 
 
 
