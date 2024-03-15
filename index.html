@@ -83,53 +83,40 @@
     <script>
         document.getElementById("recipe-button").addEventListener("click", function() {
             const ingredients = document.getElementById("ingredients-input").value;
-            const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${ingredients}`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const recipeList = document.getElementById("recipe-list");
-                    recipeList.innerHTML = "";
+            const url = `https://api.nutritionix.com/v1_1/search/${ingredients}?results=0:5&fields=item_name,brand_name,item_id,nf_calories,nf_total_fat`;
+            const appId = "5020e22a";
+            const appKeys = ["1b29808e36b880dc3358738a04d57cf7", "a972e967386025d510416a130b5da526"];
+            const randomKey = appKeys[Math.floor(Math.random() * appKeys.length)];
 
-                    data.meals.forEach(meal => {
-                        const recipeItem = document.createElement("div");
-                        recipeItem.classList.add("recipe-container");
-                        recipeItem.innerHTML = `
-                            <h2>${meal.strMeal}</h2>
-                            <img class="recipe-image" src="${meal.strMealThumb}" alt="${meal.strMeal}">
-                            <div class="recipe-details">
-                                <p><strong>التصنيف:</strong> ${meal.strCategory}</p>
-                                <p><strong>المكونات:</strong></p>
-                                <ul>
-                                    ${getIngredientsList(meal)}
-                                </ul>
-                                <p><strong>طريقة التحضير:</strong></p>
-                                <p>${meal.strInstructions}</p>
-                                <p><strong>مدة التحضير:</strong> ${meal.strTags}</p>
-                            </div>
-                        `;
-                        recipeList.appendChild(recipeItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-
-        function getIngredientsList(meal) {
-            let ingredientsList = '';
-            for (let i = 1; i <= 20; i++) {
-                const ingredient = meal[`strIngredient${i}`];
-                const measure = meal[`strMeasure${i}`];
-                if (ingredient && measure) {
-                    ingredientsList += `<li>${measure} ${ingredient}</li>`;
+            fetch(url, {
+                headers: {
+                    "x-app-id": appId,
+                    "x-app-key": randomKey
                 }
-            }
-            return ingredientsList;
-        }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const recipeList = document.getElementById("recipe-list");
+                recipeList.innerHTML = "";
+
+                data.hits.forEach(hit => {
+                    const recipeItem = document.createElement("div");
+                    recipeItem.classList.add("recipe-container");
+                    recipeItem.innerHTML = `
+                        <h2>${hit.fields.item_name}</h2>
+                        <p><strong>العلامة التجارية:</strong> ${hit.fields.brand_name}</p>
+                        <p><strong>السعرات الحرارية:</strong> ${hit.fields.nf_calories}</p>
+                        <p><strong>الدهون الكلية:</strong> ${hit.fields.nf_total_fat}</p>
+                    `;
+                    recipeList.appendChild(recipeItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
     </script>
 </body>
 </html>
+
 
 
 
