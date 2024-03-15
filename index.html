@@ -2,34 +2,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Translate API Test</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Translation Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@vitalets/google-translate-api@7/dist/browser/index.js"></script>
 </head>
 <body>
-    <h1>Translate API Test</h1>
+    <h1>Translation Test</h1>
     <textarea id="inputText" rows="5" cols="50">أدخل النص هنا</textarea><br>
     <button onclick="translateText()">ترجم</button><br>
     <div id="translatedText"></div>
 
     <script>
-        function translateText() {
-            var apiKey = '165f4a6fb2c9f7';
-            var textToTranslate = $('#inputText').val();
-            var url = 'https://api.translate.com/translate?langFrom=ar&langTo=en&text=' + encodeURIComponent(textToTranslate);
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + apiKey);
-                },
-                success: function(data) {
-                    $('#translatedText').text(data.translation);
-                },
-                error: function(xhr, status, error) {
-                    console.log('Error:', error);
-                }
-            });
+        async function translateText() {
+            var textToTranslate = document.getElementById('inputText').value;
+            
+            const result = await translate(textToTranslate, { from: 'ar', to: 'en' });
+            document.getElementById('translatedText').innerText = result.text;
         }
     </script>
 </body>
