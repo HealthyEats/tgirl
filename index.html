@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Translation Test</title>
-    <script src="https://cdn.jsdelivr.net/npm/@vitalets/google-translate-api@7/dist/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/google-translate-api"></script>
 </head>
 <body>
     <h1>Translation Test</h1>
@@ -12,26 +11,25 @@
     <div id="translatedText"></div>
 
     <script>
-        async function translateText() {
+        function translateText() {
             var textToTranslate = document.getElementById('inputText').value;
             
-            const result = await translate(textToTranslate, { from: 'ar', to: 'en' });
-            document.getElementById('translatedText').innerText = result.text;
+            googleTranslate(textToTranslate, 'ar', 'en')
+                .then(translation => {
+                    document.getElementById('translatedText').innerText = translation;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function googleTranslate(text, sourceLang, targetLang) {
+            return new Promise((resolve, reject) => {
+                googleTranslateApi(text, { from: sourceLang, to: targetLang })
+                    .then(response => resolve(response.text))
+                    .catch(error => reject(error));
+            });
         }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
