@@ -1,121 +1,29 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واجهة التطبيق</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        
-        .container {
-            padding: 20px;
-        }
-        
-        .button {
-            background-color: #f0f0f0;
-            border: none;
-            color: #333;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-        
-        input[type="text"] {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-            font-size: 16px;
-            background-color: #ffffff;
-            color: #333;
-        }
-
-        #recipe-list {
-            text-align: right;
-            margin-top: 20px;
-        }
-
-        .recipe-container {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #f0f0f0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .recipe-image {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .recipe-details {
-            margin-top: 20px;
-            font-size: 18px;
-            line-height: 1.6;
-            color: #333;
-            text-align: right;
-        }
-    </style>
+    <title>Translate API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <input type="text" id="ingredients-input" placeholder="أدخل المكونات هنا...">
-        <button class="button" id="recipe-button">اعطني الوصفة</button>
-
-        <div id="recipe-list"></div>
-    </div>
+    <h1>Translate API Test</h1>
+    <textarea id="inputText" rows="5" cols="50">أدخل النص هنا</textarea><br>
+    <button onclick="translateText()">ترجم</button><br>
+    <div id="translatedText"></div>
 
     <script>
-        document.getElementById("recipe-button").addEventListener("click", function() {
-            const ingredients = document.getElementById("ingredients-input").value;
-            const url = `https://api.nutritionix.com/v1_1/search/${ingredients}?results=0:5&fields=item_name,brand_name,item_id,nf_calories,nf_total_fat`;
-            const appId = "5020e22a";
-            const appKeys = ["1b29808e36b880dc3358738a04d57cf7", "a972e967386025d510416a130b5da526"];
-            const randomKey = appKeys[Math.floor(Math.random() * appKeys.length)];
+        function translateText() {
+            var apiKey = 'YOUR_API_KEY';
+            var textToTranslate = $('#inputText').val();
+            var url = 'https://api.translate.com/translate?langFrom=ar&langTo=en&text=' + encodeURIComponent(textToTranslate) + '&key=' + apiKey;
 
-            fetch(url, {
-                headers: {
-                    "x-app-id": appId,
-                    "x-app-key": randomKey
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const recipeList = document.getElementById("recipe-list");
-                recipeList.innerHTML = "";
-
-                data.hits.forEach(hit => {
-                    const recipeItem = document.createElement("div");
-                    recipeItem.classList.add("recipe-container");
-                    recipeItem.innerHTML = `
-                        <h2>${hit.fields.item_name}</h2>
-                        <p><strong>العلامة التجارية:</strong> ${hit.fields.brand_name}</p>
-                        <p><strong>السعرات الحرارية:</strong> ${hit.fields.nf_calories}</p>
-                        <p><strong>الدهون الكلية:</strong> ${hit.fields.nf_total_fat}</p>
-                    `;
-                    recipeList.appendChild(recipeItem);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-        });
+            $.get(url, function(data) {
+                $('#translatedText').text(data.translation);
+            });
+        }
     </script>
 </body>
 </html>
+
 
 
 
