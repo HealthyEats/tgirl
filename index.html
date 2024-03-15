@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +15,20 @@
         function translateText() {
             var apiKey = '165f4a6fb2c9f7';
             var textToTranslate = $('#inputText').val();
-            var url = 'https://api.translate.com/translate?langFrom=ar&langTo=en&text=' + encodeURIComponent(textToTranslate) + '&key=' + apiKey;
+            var url = 'https://api.translate.com/translate?langFrom=ar&langTo=en&text=' + encodeURIComponent(textToTranslate);
 
-            $.get(url, function(data) {
-                $('#translatedText').text(data.translation);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + apiKey);
+                },
+                success: function(data) {
+                    $('#translatedText').text(data.translation);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', error);
+                }
             });
         }
     </script>
