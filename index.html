@@ -1,35 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-    <title>Translation Test</title>
-    <script src="https://cdn.jsdelivr.net/npm/google-translate-api"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>واجهة التطبيق</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        .container {
+            padding: 20px;
+        }
+        
+        .button {
+            background-color: #f0f0f0;
+            border: none;
+            color: #333;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .button.active {
+            background-color: #f0f0f0;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            font-size: 16px;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        input[type="range"] {
+            margin-top: 10px;
+            width: 200px;
+            background-color: #ffffff;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #time-label {
+            margin-top: 10px;
+            display: block;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .recipe-container {
+            text-align: right;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .recipe-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .recipe-details {
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        #profile-pic-upload {
+            display: none;
+        }
+
+        #profile-pic-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 2px solid #f0f0f0;
+            margin-bottom: 10px;
+        }
+
+        #profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        #username {
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>Translation Test</h1>
-    <textarea id="inputText" rows="5" cols="50">أدخل النص هنا</textarea><br>
-    <button onclick="translateText()">ترجم</button><br>
-    <div id="translatedText"></div>
+    <div class="container">
+        <div id="profile-pic-container">
+            <input type="file" accept="image/*" id="profile-pic-upload">
+            <label for="profile-pic-upload">
+                <img src="img.png" alt="Profile Picture" id="profile-pic">
+            </label>
+        </div>
+        <span id="username">اسم المستخدم</span>
+        <div>
+            <button class="button" id="referral-button" onclick="copyReferralLink()">رابط الاحالة</button>
+            <button class="button" id="balance-button" disabled>رصيدك: 0 دج</button>
+        </div>
+        <div style="margin-top: 20px;">
+            <div style="display: inline-block;">
+                <input type="text" id="ingredients-input" placeholder="أدخل المكونات هنا...">
+                <label for="time-range" id="time-label">كم لديك من الوقت؟</label>
+                <input type="range" min="5" max="180" value="5" id="time-range">
+                
+                <button class="button" id="recipe-button" style="margin-top:20px;">اعطني الوصفة</button>
+            </div>
+        </div>
+
+        <div id="recipe-list"></div>
+    </div>
 
     <script>
-        function translateText() {
-            var textToTranslate = document.getElementById('inputText').value;
-            
-            googleTranslate(textToTranslate, 'ar', 'en')
-                .then(translation => {
-                    document.getElementById('translatedText').innerText = translation;
+        function copyReferralLink() {
+            const referralLink = "https://work-sniper.com";
+            navigator.clipboard.writeText(referralLink).then(function() {
+                alert("تم النسخ");
+            }, function(err) {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        document.getElementById("time-range").addEventListener("input", function() {
+            var time = this.value;
+            document.getElementById("time-label").textContent = time + " دقائق (كم لديك من الوقت؟)";
+        });
+
+        document.getElementById("recipe-button").addEventListener("click", function() {
+            const time = document.getElementById("time-range").value;
+            const ingredientsInput = document.getElementById("ingredients-input");
+            const ingredients = ingredientsInput.value;
+
+            // ترجمة المكونات إلى الإنجليزية
+            translateText(ingredients)
+                .then(translatedIngredients => {
+                    if (translatedIngredients) {
+                        const appId = "9fa74179";
+                        const appKey = "d1d5b7e7a12b05cbda6767a1fb30a3b9";
+                        const url = `https://api.edamam.com/search?q=${translatedIngredients}&app_id=${appId}&app_key=${appKey}&time=${time}`;
+
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                const recipeList = document.getElementById("recipe-list");
+                                recipeList.innerHTML = "";
+
+                                data.hits.forEach(hit => {
+                                    const recipe = hit.recipe;
+                                    const recipeItem = document.createElement("div");
+                                    recipeItem.classList.add("recipe-container");
+                                    recipeItem.innerHTML = `
+                                        <h2>${recipe.label}</h2>
+                                        <img class="recipe-image" src="${recipe.image}" alt="${recipe.label}">
+                                        <div>
+                                            <p><strong>وقت التحضير:</strong> ${recipe.totalTime} دقيقة</p>
+                                            <p><strong>المكونات:</strong></p>
+                                            <ul>
+                                                ${recipe.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                                            </ul>
+                                            <p><strong>طريقة التحضير:</strong></p>
+                                            <ol>
+                                                ${recipe.instructions ? recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('') : '<li>تعليمات غير متوفرة</li>'}
+                                            </ol>
+                                        </div>
+                                    `;
+                                    recipeList.appendChild(recipeItem);
+                                });
+                            });
+                    } else {
+                        console.error('Failed to translate ingredients');
+                    }
+                });
+        });
+
+        function translateText(textToTranslate) {
+            var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(textToTranslate) + '&langpair=ar|en';
+
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    return data.responseData.translatedText;
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    return null;
                 });
-        }
-
-        function googleTranslate(text, sourceLang, targetLang) {
-            return new Promise((resolve, reject) => {
-                googleTranslateApi(text, { from: sourceLang, to: targetLang })
-                    .then(response => resolve(response.text))
-                    .catch(error => reject(error));
-            });
         }
     </script>
 </body>
 </html>
+
